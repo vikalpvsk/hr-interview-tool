@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart Interview Question Generator</title>
+
+<style>
+
+body{
+font-family: Arial;
+text-align:center;
+margin-top:40px;
+background:#f4f6f8;
+}
+
+input,textarea,button{
+width:60%;
+padding:12px;
+margin-top:10px;
+font-size:16px;
+}
+
+textarea{
+height:120px;
+}
+
+#questions{
+margin-top:30px;
+width:60%;
+margin-left:auto;
+margin-right:auto;
+text-align:left;
+font-size:18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Interview Question Generator</h1>
+
+<input id="title" placeholder="Candidate Profile Title (Example: Frontend Developer)">
+
+<input id="exp" placeholder="Years of Experience">
+
+<textarea id="jd" placeholder="Paste Job Description here"></textarea>
+
+<br>
+
+<button onclick="generate()">Generate Questions</button>
+
+<div id="questions"></div>
+
+<script>
+
+async function generate(){
+
+let title=document.getElementById("title").value;
+let jd=document.getElementById("jd").value;
+let exp=document.getElementById("exp").value;
+
+let response = await fetch("/api/generate", {
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({title,jd,exp})
+});
+
+let data = await response.json();
+
+document.getElementById("questions").innerHTML =
+"<pre>"+data.questions+"</pre>";
+
+}
+if(title.includes("backend") || jd.includes("api") || jd.includes("database")){
+questions.push(
+"What is REST API",
+"Explain database indexing",
+"What is caching",
+"Explain microservices architecture"
+);
+}
+
+if(jd.includes("team") || jd.includes("lead")){
+questions.push(
+"Describe a time you led a team",
+"How do you resolve team conflicts"
+);
+}
+
+questions.push(
+"Tell me about yourself",
+"Describe a challenging problem you solved recently",
+"Why are you interested in this role"
+);
+
+let output="<h3>Suggested Interview Questions</h3><ul>";
+
+questions.forEach(q=>{
+output+="<li>"+q+"</li>";
+});
+
+output+="</ul>";
+
+document.getElementById("questions").innerHTML=output;
+
+}
+
+</script>
+
+</body>
+</html>
